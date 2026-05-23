@@ -4,18 +4,44 @@ import { heroSlidesQuery, projectsQuery, homepageSectionsQuery } from '../../san
 import { PROJECTS, GALLERY } from '@/lib/data';
 import type { Project } from '@/lib/data';
 
-// ── Types returned by GROQ ─────────────────────────────────────────────────
+// ── Shared image type (full object with crop + hotspot) ────────────────────
 
-export type SanityHeroSlide = { label: string; imageUrl: string };
-
-// Full image object from Sanity (includes crop + hotspot for urlFor)
 type SanityImage = {
-  asset: { _ref: string; url: string };
-  crop?: { top: number; bottom: number; left: number; right: number };
-  hotspot?: { x: number; y: number; width: number; height: number };
+  asset: { _id: string; url: string };
+  crop?: { top: number; bottom: number; left: number; right: number } | null;
+  hotspot?: { x: number; y: number; width: number; height: number } | null;
 } | null;
 
-type SanityHomepageSectionsRaw = {
+/** Resolve a Sanity image object → URL, respecting crop + hotspot */
+function imgUrl(img: SanityImage): string | null {
+  if (!img?.asset) return null;
+  return urlFor(img).auto('format').url();
+}
+
+// ── Raw GROQ return types ──────────────────────────────────────────────────
+
+type RawHeroSlide = { label: string; image: SanityImage };
+
+type RawSlide = {
+  label: string;
+  aspectRatio: string;
+  mediaType: 'image' | 'video';
+  image: SanityImage;
+  videoUrl: string | null;
+};
+
+type RawProject = {
+  slug: string;
+  client: string;
+  category: string;
+  description: string;
+  bgColor: string;
+  highlightColor: string;
+  featured: boolean;
+  slides: RawSlide[];
+};
+
+type RawHomepageSections = {
   methodPortrait:    SanityImage;
   methodLandscape01: SanityImage;
   methodLandscape02: SanityImage;
@@ -24,7 +50,10 @@ type SanityHomepageSectionsRaw = {
   motionVideoUrl:    string | null;
 };
 
-// Resolved form passed to components (plain URLs)
+// ── Public types passed to components ─────────────────────────────────────
+
+export type SanityHeroSlide = { label: string; imageUrl: string };
+
 export type SanityHomepageSections = {
   methodPortrait:    string | null;
   methodLandscape01: string | null;
@@ -34,32 +63,9 @@ export type SanityHomepageSections = {
   motionVideoUrl:    string | null;
 };
 
-export type SanityProject = {
-  slug: string;
-  client: string;
-  category: string;
-  description: string;
-  bgColor: string;
-  highlightColor: string;
-  featured: boolean;
-  slides: Array<{
-    label: string;
-    aspectRatio: string;
-    mediaType: 'image' | 'video';
-    imageUrl: string | null;
-    videoUrl: string | null;
-  }>;
-};
+// ── Normalise Sanity project → local Project type ──────────────────────────
 
-// ── Helpers ────────────────────────────────────────────────────────────────
-
-/** Resolve a Sanity image object to a URL, respecting crop + hotspot */
-function resolveImageUrl(img: SanityImage): string | null {
-  if (!img?.asset) return null;
-  return urlFor(img).auto('format').url();
-}
-
-function toProject(p: SanityProject): Project {
+function toProject(p: RawProject): Project {
   return {
     id: p.slug,
     client: p.client,
@@ -71,16 +77,16 @@ function toProject(p: SanityProject): Project {
       label: s.label,
       ratio: s.aspectRatio,
       type: s.mediaType,
-      src: s.mediaType === 'video' ? (s.videoUrl ?? '') : (s.imageUrl ?? ''),
+      src: s.mediaType === 'video' ? (s.videoUrl ?? '') : (imgUrl(s.image) ?? ''),
     })),
   };
 }
 
-// ── Fetch helpers (server-side, with static fallback) ─────────────────────
+// ── Fetch helpers ──────────────────────────────────────────────────────────
 
 export async function fetchProjects(): Promise<Project[]> {
   try {
-    const raw: SanityProject[] = await client.fetch(projectsQuery, {}, { next: { tags: ['sanity'] } });
+    const raw: RawProject[] = await client.fetch(projectsQuery, {}, { next: { tags: ['sanity'] } });
     if (raw?.length) return raw.map(toProject);
   } catch (err) {
     console.warn('[fetchProjects] Sanity unavailable, using static data:', err);
@@ -95,8 +101,12 @@ export async function fetchProjectBySlug(slug: string): Promise<Project | null> 
 
 export async function fetchHeroSlides(): Promise<SanityHeroSlide[]> {
   try {
-    const raw: SanityHeroSlide[] = await client.fetch(heroSlidesQuery, {}, { next: { tags: ['sanity'] } });
-    if (raw?.length) return raw;
+    const raw: RawHeroSlide[] = await client.fetch(heroSlidesQuery, {}, { next: { tags: ['sanity'] } });
+    if (raw?.length) {
+      return raw
+        .map(s => ({ label: s.label, imageUrl: imgUrl(s.image) ?? '' }))
+        .filter(s => s.imageUrl);
+    }
   } catch (err) {
     console.warn('[fetchHeroSlides] Sanity unavailable, using static data:', err);
   }
@@ -108,14 +118,14 @@ export async function fetchHeroSlides(): Promise<SanityHeroSlide[]> {
 
 export async function fetchHomepageSections(): Promise<SanityHomepageSections> {
   try {
-    const raw: SanityHomepageSectionsRaw = await client.fetch(homepageSectionsQuery, {}, { next: { tags: ['sanity'] } });
+    const raw: RawHomepageSections = await client.fetch(homepageSectionsQuery, {}, { next: { tags: ['sanity'] } });
     if (raw) {
       return {
-        methodPortrait:    resolveImageUrl(raw.methodPortrait),
-        methodLandscape01: resolveImageUrl(raw.methodLandscape01),
-        methodLandscape02: resolveImageUrl(raw.methodLandscape02),
-        digitalSets01:     resolveImageUrl(raw.digitalSets01),
-        digitalSets02:     resolveImageUrl(raw.digitalSets02),
+        methodPortrait:    imgUrl(raw.methodPortrait),
+        methodLandscape01: imgUrl(raw.methodLandscape01),
+        methodLandscape02: imgUrl(raw.methodLandscape02),
+        digitalSets01:     imgUrl(raw.digitalSets01),
+        digitalSets02:     imgUrl(raw.digitalSets02),
         motionVideoUrl:    raw.motionVideoUrl,
       };
     }

@@ -3,7 +3,7 @@ import { groq } from 'next-sanity';
 export const heroSlidesQuery = groq`
   *[_type == "heroSlide"] | order(order asc) {
     label,
-    "imageUrl": image.asset->url
+    "image": image { asset->, crop, hotspot }
   }
 `;
 
@@ -13,7 +13,7 @@ export const projectsQuery = groq`
     client, category, description, bgColor, highlightColor, featured,
     slides[] {
       label, aspectRatio, mediaType,
-      "imageUrl": image.asset->url,
+      "image": image { asset->, crop, hotspot },
       "videoUrl": video.asset->url
     }
   }

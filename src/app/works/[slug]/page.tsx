@@ -1,13 +1,17 @@
 import { notFound } from 'next/navigation';
-import { PROJECTS } from '@/lib/data';
+import { fetchProjects, fetchProjectBySlug } from '@/lib/sanity-fetch';
 import { ProjectDetail } from '@/components/ProjectDetail';
 
-export function generateStaticParams() {
-  return PROJECTS.map(p => ({ slug: p.id }));
+export const revalidate = 60;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const projects = await fetchProjects();
+  return projects.map(p => ({ slug: p.id }));
 }
 
-export default function ProjectPage({ params }: { params: { slug: string } }) {
-  const project = PROJECTS.find(p => p.id === params.slug);
+export default async function ProjectPage({ params }: { params: { slug: string } }) {
+  const project = await fetchProjectBySlug(params.slug);
   if (!project) notFound();
   return <ProjectDetail project={project} />;
 }

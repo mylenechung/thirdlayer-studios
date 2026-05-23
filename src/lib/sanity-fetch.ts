@@ -80,7 +80,7 @@ function toProject(p: SanityProject): Project {
 
 export async function fetchProjects(): Promise<Project[]> {
   try {
-    const raw: SanityProject[] = await client.fetch(projectsQuery, {}, { next: { revalidate: 60 } });
+    const raw: SanityProject[] = await client.fetch(projectsQuery, {}, { next: { tags: ['sanity'] } });
     if (raw?.length) return raw.map(toProject);
   } catch (err) {
     console.warn('[fetchProjects] Sanity unavailable, using static data:', err);
@@ -95,7 +95,7 @@ export async function fetchProjectBySlug(slug: string): Promise<Project | null> 
 
 export async function fetchHeroSlides(): Promise<SanityHeroSlide[]> {
   try {
-    const raw: SanityHeroSlide[] = await client.fetch(heroSlidesQuery, {}, { next: { revalidate: 60 } });
+    const raw: SanityHeroSlide[] = await client.fetch(heroSlidesQuery, {}, { next: { tags: ['sanity'] } });
     if (raw?.length) return raw;
   } catch (err) {
     console.warn('[fetchHeroSlides] Sanity unavailable, using static data:', err);
@@ -108,7 +108,7 @@ export async function fetchHeroSlides(): Promise<SanityHeroSlide[]> {
 
 export async function fetchHomepageSections(): Promise<SanityHomepageSections> {
   try {
-    const raw: SanityHomepageSectionsRaw = await client.fetch(homepageSectionsQuery, {}, { next: { revalidate: 60 } });
+    const raw: SanityHomepageSectionsRaw = await client.fetch(homepageSectionsQuery, {}, { next: { tags: ['sanity'] } });
     if (raw) {
       return {
         methodPortrait:    resolveImageUrl(raw.methodPortrait),

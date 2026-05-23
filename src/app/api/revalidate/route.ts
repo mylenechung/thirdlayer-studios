@@ -1,4 +1,4 @@
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -8,7 +8,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Invalid secret' }, { status: 401 });
   }
 
-  // Revalidate all pages that show Sanity content
+  // Clear the data cache (all fetch() calls tagged 'sanity')
+  revalidateTag('sanity');
+
+  // Also clear the full route cache for each page
   revalidatePath('/');
   revalidatePath('/works');
   revalidatePath('/works/[slug]', 'page');

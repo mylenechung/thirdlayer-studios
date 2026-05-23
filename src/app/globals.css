@@ -2,26 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #f3efe8; }
+button { font-size: inherit; }
+input::placeholder, textarea::placeholder { color: #b8b3ab; }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: #f3efe8; }
+::-webkit-scrollbar-thumb { background: #b8b3ab; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
+.page-enter { animation: fadeUp 0.38s ease forwards; }

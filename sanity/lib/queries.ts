@@ -25,11 +25,11 @@ export const siteSettingsQuery = groq`
 
 export const homepageSectionsQuery = groq`
   *[_type == "homepageSections"][0] {
-    "methodPortrait": methodImages.portrait.asset->url,
-    "methodLandscape01": methodImages.landscape01.asset->url,
-    "methodLandscape02": methodImages.landscape02.asset->url,
-    "digitalSets01": digitalSetsImages.image01.asset->url,
-    "digitalSets02": digitalSetsImages.image02.asset->url,
-    "motionVideoUrl": motionVideo.asset->url
+    methodPortrait:    methodImages.portrait    { asset->, crop, hotspot },
+    methodLandscape01: methodImages.landscape01 { asset->, crop, hotspot },
+    methodLandscape02: methodImages.landscape02 { asset->, crop, hotspot },
+    digitalSets01:     digitalSetsImages.image01 { asset->, crop, hotspot },
+    digitalSets02:     digitalSetsImages.image02 { asset->, crop, hotspot },
+    "motionVideoUrl":  motionVideo.asset->url
   }
 `;

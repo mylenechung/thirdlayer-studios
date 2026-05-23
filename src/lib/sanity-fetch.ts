@@ -1,4 +1,5 @@
 import { client } from '../../sanity/lib/client';
+import { urlFor } from '../../sanity/lib/image';
 import { heroSlidesQuery, projectsQuery, homepageSectionsQuery } from '../../sanity/lib/queries';
 import { PROJECTS, GALLERY } from '@/lib/data';
 import type { Project } from '@/lib/data';
@@ -7,13 +8,30 @@ import type { Project } from '@/lib/data';
 
 export type SanityHeroSlide = { label: string; imageUrl: string };
 
+// Full image object from Sanity (includes crop + hotspot for urlFor)
+type SanityImage = {
+  asset: { _ref: string; url: string };
+  crop?: { top: number; bottom: number; left: number; right: number };
+  hotspot?: { x: number; y: number; width: number; height: number };
+} | null;
+
+type SanityHomepageSectionsRaw = {
+  methodPortrait:    SanityImage;
+  methodLandscape01: SanityImage;
+  methodLandscape02: SanityImage;
+  digitalSets01:     SanityImage;
+  digitalSets02:     SanityImage;
+  motionVideoUrl:    string | null;
+};
+
+// Resolved form passed to components (plain URLs)
 export type SanityHomepageSections = {
-  methodPortrait: string | null;
+  methodPortrait:    string | null;
   methodLandscape01: string | null;
   methodLandscape02: string | null;
-  digitalSets01: string | null;
-  digitalSets02: string | null;
-  motionVideoUrl: string | null;
+  digitalSets01:     string | null;
+  digitalSets02:     string | null;
+  motionVideoUrl:    string | null;
 };
 
 export type SanityProject = {
@@ -33,7 +51,13 @@ export type SanityProject = {
   }>;
 };
 
-// ── Normalise Sanity project → local Project type ──────────────────────────
+// ── Helpers ────────────────────────────────────────────────────────────────
+
+/** Resolve a Sanity image object to a URL, respecting crop + hotspot */
+function resolveImageUrl(img: SanityImage): string | null {
+  if (!img?.asset) return null;
+  return urlFor(img).auto('format').url();
+}
 
 function toProject(p: SanityProject): Project {
   return {
@@ -76,7 +100,6 @@ export async function fetchHeroSlides(): Promise<SanityHeroSlide[]> {
   } catch (err) {
     console.warn('[fetchHeroSlides] Sanity unavailable, using static data:', err);
   }
-  // Fallback: use local images
   return [
     { label: 'Key Visual',    imageUrl: '/hero-slideshow/hero-slide-01.jpg' },
     { label: 'Campaign Shot', imageUrl: '/hero-slideshow/hero-slide-02.jpg' },
@@ -85,12 +108,20 @@ export async function fetchHeroSlides(): Promise<SanityHeroSlide[]> {
 
 export async function fetchHomepageSections(): Promise<SanityHomepageSections> {
   try {
-    const raw: SanityHomepageSections = await client.fetch(homepageSectionsQuery, {}, { next: { revalidate: 60 } });
-    if (raw) return raw;
+    const raw: SanityHomepageSectionsRaw = await client.fetch(homepageSectionsQuery, {}, { next: { revalidate: 60 } });
+    if (raw) {
+      return {
+        methodPortrait:    resolveImageUrl(raw.methodPortrait),
+        methodLandscape01: resolveImageUrl(raw.methodLandscape01),
+        methodLandscape02: resolveImageUrl(raw.methodLandscape02),
+        digitalSets01:     resolveImageUrl(raw.digitalSets01),
+        digitalSets02:     resolveImageUrl(raw.digitalSets02),
+        motionVideoUrl:    raw.motionVideoUrl,
+      };
+    }
   } catch (err) {
     console.warn('[fetchHomepageSections] Sanity unavailable, using static data:', err);
   }
-  // Fallback: use local images
   return {
     methodPortrait:    '/method/Method_portrait.jpg',
     methodLandscape01: '/method/Method_landscape01.jpg',
@@ -102,6 +133,5 @@ export async function fetchHomepageSections(): Promise<SanityHomepageSections> {
 }
 
 export async function fetchGallery() {
-  // Gallery items are not in Sanity yet; serve from static data
   return GALLERY;
 }

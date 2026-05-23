@@ -61,7 +61,7 @@ export function ProjectDetail({ project }: { project: Project }) {
       >
         <div style={{ display: 'flex', transform: `translateX(calc(-${slide * 100}% + ${drag.active ? drag.delta : 0}px))`, transition: drag.active ? 'none' : 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)' }}>
           {slides.map((s, i) => (
-            <div key={i} style={{ flex: '0 0 100%', padding: mob ? '0 16px' : '0 64px', boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', height: mob ? 'auto' : 'clamp(280px,55vh,500px)' }}>
+            <div key={i} style={{ flex: '0 0 100%', padding: mob ? '0 16px' : '0 64px', boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', height: mob ? 'auto' : 'clamp(360px,78vh,900px)' }}>
               <div style={{ height: mob ? 'auto' : '100%', width: mob ? '100%' : 'auto', maxWidth: '100%', aspectRatio: s.ratio, background: `linear-gradient(140deg,${project.hi}2a 0%,${project.bg} 100%)`, border: '1px solid rgba(243,239,232,0.08)', display: 'flex', alignItems: 'flex-end', padding: 20, boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
                 {s.type === 'image' ? (
                   <Image src={s.src} alt={s.label} fill sizes="(max-width:768px) 90vw, 55vh" style={{ objectFit: 'cover' }} />

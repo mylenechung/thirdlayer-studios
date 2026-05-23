@@ -49,6 +49,7 @@ export function ProjectDetail({ project }: { project: Project }) {
         <div style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 13, color: 'rgba(243,239,232,0.3)', paddingBottom: 8 }}>{slide + 1} / {n}</div>
       </div>
 
+      {/* Slider track — no fixed height; height comes from each image box */}
       <div
         style={{ position: 'relative', overflow: 'hidden', cursor: drag.active ? 'grabbing' : 'grab', userSelect: 'none' }}
         onMouseDown={e => startDrag(e.clientX)}
@@ -60,24 +61,85 @@ export function ProjectDetail({ project }: { project: Project }) {
         onTouchEnd={endDrag}
       >
         <div style={{ display: 'flex', transform: `translateX(calc(-${slide * 100}% + ${drag.active ? drag.delta : 0}px))`, transition: drag.active ? 'none' : 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)' }}>
-          {slides.map((s, i) => (
-            <div key={i} style={{ flex: '0 0 100%', padding: mob ? '0 16px' : '0 64px', boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', height: mob ? 'auto' : 'clamp(360px,78vh,900px)' }}>
-              <div style={{ height: mob ? 'auto' : '100%', width: mob ? '100%' : 'auto', maxWidth: '100%', aspectRatio: s.ratio, background: `linear-gradient(140deg,${project.hi}2a 0%,${project.bg} 100%)`, border: '1px solid rgba(243,239,232,0.08)', display: 'flex', alignItems: 'flex-end', padding: 20, boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
-                {s.type === 'image' ? (
-                  <Image src={s.src} alt={s.label} fill sizes="(max-width:768px) 90vw, 55vh" style={{ objectFit: 'cover' }} />
-                ) : (
-                  <video autoPlay muted loop playsInline src={s.src} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                )}
-                <span style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 10, letterSpacing: '0.15em', color: 'rgba(243,239,232,0.35)', textTransform: 'uppercase', position: 'relative', zIndex: 1 }}>{s.label}</span>
+          {slides.map((s, i) => {
+            // Compute numeric ratio value for maxWidth calculation
+            const [rw, rh] = s.ratio.split('/').map(Number);
+            const rv = rw / rh;
+
+            return (
+              <div
+                key={i}
+                style={{
+                  flex: '0 0 100%',
+                  padding: mob ? '0 16px' : '0 64px',
+                  boxSizing: 'border-box',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  // No fixed height — let the image box drive it
+                }}
+              >
+                {/*
+                  Desktop sizing (no-crop):
+                    width: 100% fills the padded container.
+                    maxWidth = clamp(360px,78vh,900px) × ratio — this is the
+                    "ideal" width when height is 78vh. When the browser is wide
+                    enough, maxWidth kicks in and aspect-ratio derives the
+                    height → 78vh (height-driven, as spec requires).
+                    When the browser narrows below that maxWidth, width stays
+                    at 100% of the available space and aspect-ratio derives a
+                    proportionally smaller height — no cropping.
+
+                  Mobile sizing:
+                    width: 100%, aspect-ratio drives the height (width-driven).
+                */}
+                <div
+                  style={{
+                    width: '100%',
+                    maxWidth: mob ? undefined : `calc(clamp(360px, 78vh, 900px) * ${rv.toFixed(4)})`,
+                    aspectRatio: s.ratio,
+                    background: `linear-gradient(140deg,${project.hi}2a 0%,${project.bg} 100%)`,
+                    border: '1px solid rgba(243,239,232,0.08)',
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    padding: 20,
+                    boxSizing: 'border-box',
+                    position: 'relative',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {s.type === 'image' ? (
+                    <Image
+                      src={s.src}
+                      alt={s.label}
+                      fill
+                      sizes="(max-width:768px) 90vw, 75vh"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <video
+                      autoPlay muted loop playsInline src={s.src}
+                      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  )}
+                  <span style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 10, letterSpacing: '0.15em', color: 'rgba(243,239,232,0.35)', textTransform: 'uppercase', position: 'relative', zIndex: 1 }}>{s.label}</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
+
         {slide > 0 && (
-          <button onClick={e => { e.stopPropagation(); setSlide(s => s - 1); }} style={{ position: 'absolute', left: 20, top: '50%', transform: 'translateY(-50%)', background: 'rgba(20,20,20,0.6)', border: '1px solid rgba(243,239,232,0.15)', width: 48, height: 48, borderRadius: '50%', color: C.beige, fontSize: 20, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>←</button>
+          <button
+            onClick={e => { e.stopPropagation(); setSlide(s => s - 1); }}
+            style={{ position: 'absolute', left: mob ? 4 : 20, top: '50%', transform: 'translateY(-50%)', background: 'rgba(20,20,20,0.6)', border: '1px solid rgba(243,239,232,0.15)', width: mob ? 36 : 48, height: mob ? 36 : 48, borderRadius: '50%', color: C.beige, fontSize: mob ? 16 : 20, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >←</button>
         )}
         {slide < n - 1 && (
-          <button onClick={e => { e.stopPropagation(); setSlide(s => s + 1); }} style={{ position: 'absolute', right: 20, top: '50%', transform: 'translateY(-50%)', background: 'rgba(20,20,20,0.6)', border: '1px solid rgba(243,239,232,0.15)', width: 48, height: 48, borderRadius: '50%', color: C.beige, fontSize: 20, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>→</button>
+          <button
+            onClick={e => { e.stopPropagation(); setSlide(s => s + 1); }}
+            style={{ position: 'absolute', right: mob ? 4 : 20, top: '50%', transform: 'translateY(-50%)', background: 'rgba(20,20,20,0.6)', border: '1px solid rgba(243,239,232,0.15)', width: mob ? 36 : 48, height: mob ? 36 : 48, borderRadius: '50%', color: C.beige, fontSize: mob ? 16 : 20, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >→</button>
         )}
       </div>
 

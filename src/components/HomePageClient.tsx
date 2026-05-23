@@ -46,10 +46,10 @@ export function HomePageClient({ heroSlides, projects, sections }: HomePageClien
             <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 15, lineHeight: 1.8, color: 'rgba(243,239,232,0.52)', maxWidth: 380, margin: 0 }}>
               A proprietary hybrid workflow combining real production expertise with AI-assisted creative tools.
             </p>
-            <div style={{ display: 'flex', gap: 12 }}>
+            <div style={{ display: 'flex', flexDirection: mob ? 'column' : 'row', gap: 12, width: mob ? '100%' : 'auto' }}>
               {([['View Our Works', 'works', 'outline'], ['Start a Project', 'contact', 'fill']] as const).map(([label, dest, type]) => (
                 <button key={dest} onClick={() => go(dest)} onMouseEnter={() => h(dest)} onMouseLeave={() => u(dest)}
-                  style={{ padding: '13px 30px', cursor: 'pointer', fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 500, transition: 'all 0.25s', background: type === 'fill' ? (hov[dest] ? '#c94a2e' : C.accent) : (hov[dest] ? C.accent : 'transparent'), border: `1px solid ${type === 'fill' ? C.accent : 'rgba(243,239,232,0.3)'}`, color: type === 'fill' ? C.beige : (hov[dest] ? C.beige : 'rgba(243,239,232,0.85)') }}>
+                  style={{ padding: '13px 30px', cursor: 'pointer', fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 500, transition: 'all 0.25s', background: type === 'fill' ? (hov[dest] ? '#c94a2e' : C.accent) : (hov[dest] ? C.accent : 'transparent'), border: `1px solid ${type === 'fill' ? C.accent : 'rgba(243,239,232,0.3)'}`, color: type === 'fill' ? C.beige : (hov[dest] ? C.beige : 'rgba(243,239,232,0.85)'), width: mob ? '100%' : 'auto', textAlign: 'center' }}>
                   {label}
                 </button>
               ))}

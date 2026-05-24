@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Righteous, DM_Sans } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/Navbar';
@@ -17,6 +17,11 @@ const dmSans = DM_Sans({
   variable: '--font-dm-sans',
   display: 'swap',
 });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: 'Third Layer Studios — AI-Assisted Product Imagery',

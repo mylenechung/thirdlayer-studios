@@ -160,11 +160,11 @@ export function HomePageClient({ heroSlides, projects, sections }: HomePageClien
             </div>
           </div>
           <div style={{ display: 'flex', gap: 16 }}>
-            <div style={{ flex: 1, aspectRatio: '3/4', position: 'relative', overflow: 'hidden', background: 'rgba(20,20,20,0.05)', border: '1px solid rgba(20,20,20,0.08)' }}>
-              <Image src={imgSrc(sections.digitalSets01, '/digital-sets/digitalsets1.jpg')} alt="Digital set 1" fill sizes="25vw" style={{ objectFit: 'cover' }} unoptimized />
+            <div style={{ flex: '0 0 calc(50% - 8px)', width: 'calc(50% - 8px)', aspectRatio: '3/4', position: 'relative', overflow: 'hidden', background: 'rgba(20,20,20,0.05)', border: '1px solid rgba(20,20,20,0.08)' }}>
+              <Image src={imgSrc(sections.digitalSets01, '/digital-sets/digitalsets1.jpg')} alt="Digital set 1" fill sizes="(max-width:768px) 45vw, 25vw" style={{ objectFit: 'cover' }} unoptimized />
             </div>
-            <div style={{ flex: 1, aspectRatio: '3/4', position: 'relative', overflow: 'hidden', background: 'rgba(20,20,20,0.04)', border: '1px solid rgba(20,20,20,0.08)' }}>
-              <Image src={imgSrc(sections.digitalSets02, '/digital-sets/digitalsets2.jpg')} alt="Digital set 2" fill sizes="25vw" style={{ objectFit: 'cover' }} unoptimized />
+            <div style={{ flex: '0 0 calc(50% - 8px)', width: 'calc(50% - 8px)', aspectRatio: '3/4', position: 'relative', overflow: 'hidden', background: 'rgba(20,20,20,0.04)', border: '1px solid rgba(20,20,20,0.08)' }}>
+              <Image src={imgSrc(sections.digitalSets02, '/digital-sets/digitalsets2.jpg')} alt="Digital set 2" fill sizes="(max-width:768px) 45vw, 25vw" style={{ objectFit: 'cover' }} unoptimized />
             </div>
           </div>
         </div>

@@ -160,12 +160,12 @@ export function HomePageClient({ heroSlides, sections }: HomePageClientProps) {
               ))}
             </div>
           </div>
-          <div style={{ display: 'flex', gap: 16 }}>
-            <div style={{ flex: '0 0 calc(50% - 8px)', width: 'calc(50% - 8px)', aspectRatio: '3/4', position: 'relative', overflow: 'hidden', background: 'rgba(20,20,20,0.05)', border: '1px solid rgba(20,20,20,0.08)' }}>
-              <Image src={imgSrc(sections.digitalSets01, '/digital-sets/digitalsets1.jpg')} alt="Digital set 1" fill sizes="(max-width:768px) 45vw, 25vw" style={{ objectFit: 'cover' }} unoptimized />
+          <div style={{ display: 'flex', flexDirection: mob ? 'column' : 'row', gap: 16 }}>
+            <div style={{ width: '100%', flex: mob ? undefined : '0 0 calc(50% - 8px)', aspectRatio: mob ? '4/3' : '3/4', position: 'relative', overflow: 'hidden', background: 'rgba(20,20,20,0.05)', border: '1px solid rgba(20,20,20,0.08)' }}>
+              <Image src={imgSrc(sections.digitalSets01, '/digital-sets/digitalsets1.jpg')} alt="Digital set 1" fill sizes="(max-width:768px) 90vw, 25vw" style={{ objectFit: 'cover' }} unoptimized />
             </div>
-            <div style={{ flex: '0 0 calc(50% - 8px)', width: 'calc(50% - 8px)', aspectRatio: '3/4', position: 'relative', overflow: 'hidden', background: 'rgba(20,20,20,0.04)', border: '1px solid rgba(20,20,20,0.08)' }}>
-              <Image src={imgSrc(sections.digitalSets02, '/digital-sets/digitalsets2.jpg')} alt="Digital set 2" fill sizes="(max-width:768px) 45vw, 25vw" style={{ objectFit: 'cover' }} unoptimized />
+            <div style={{ width: '100%', flex: mob ? undefined : '0 0 calc(50% - 8px)', aspectRatio: mob ? '4/3' : '3/4', position: 'relative', overflow: 'hidden', background: 'rgba(20,20,20,0.04)', border: '1px solid rgba(20,20,20,0.08)' }}>
+              <Image src={imgSrc(sections.digitalSets02, '/digital-sets/digitalsets2.jpg')} alt="Digital set 2" fill sizes="(max-width:768px) 90vw, 25vw" style={{ objectFit: 'cover' }} unoptimized />
             </div>
           </div>
         </div>

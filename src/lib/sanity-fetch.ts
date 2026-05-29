@@ -15,7 +15,7 @@ type SanityImage = {
 /** Resolve a Sanity image object → URL, respecting crop + hotspot */
 function imgUrl(img: SanityImage): string | null {
   if (!img?.asset) return null;
-  return urlFor(img).auto('format').url();
+  return urlFor(img).auto('format').quality(90).url();
 }
 
 // ── Raw GROQ return types ──────────────────────────────────────────────────
@@ -69,14 +69,14 @@ function toProject(p: RawProject): Project {
   return {
     id: p.slug,
     client: p.client,
-    category: p.category,
-    description: p.description,
-    bg: p.bgColor,
-    hi: p.highlightColor,
-    slides: p.slides.map(s => ({
-      label: s.label,
-      ratio: s.aspectRatio,
-      type: s.mediaType,
+    category: p.category ?? '',
+    description: p.description ?? '',
+    bg: p.bgColor ?? '#1a1a1a',
+    hi: p.highlightColor ?? '#333333',
+    slides: (p.slides ?? []).map(s => ({
+      label: s.label ?? '',
+      ratio: s.aspectRatio ?? '3/4',
+      type: s.mediaType ?? 'image',
       src: s.mediaType === 'video' ? (s.videoUrl ?? '') : (imgUrl(s.image) ?? ''),
     })),
   };

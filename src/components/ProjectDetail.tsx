@@ -115,6 +115,7 @@ export function ProjectDetail({ project }: { project: Project }) {
                       fill
                       sizes="(max-width:768px) 90vw, 75vh"
                       style={{ objectFit: 'cover' }}
+                      unoptimized
                     />
                   ) : (
                     <video

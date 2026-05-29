@@ -6,17 +6,15 @@ import { C } from '@/lib/colors';
 import { SectionLabel } from './SectionLabel';
 import { HeroSlideshow } from './HeroSlideshow';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
-import type { Project } from '@/lib/data';
 import type { HeroSlide } from './HeroSlideshow';
 import type { SanityHomepageSections } from '@/lib/sanity-fetch';
 
 interface HomePageClientProps {
   heroSlides: HeroSlide[];
-  projects: Project[];
   sections: SanityHomepageSections;
 }
 
-export function HomePageClient({ heroSlides, projects, sections }: HomePageClientProps) {
+export function HomePageClient({ heroSlides, sections }: HomePageClientProps) {
   const bp  = useBreakpoint();
   const mob = bp === 'mob';
   const tab = bp === 'tab';
@@ -170,30 +168,6 @@ export function HomePageClient({ heroSlides, projects, sections }: HomePageClien
         </div>
       </section>
 
-      {/* SELECTED WORKS */}
-      <section style={{ padding: P, background: C.dark }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 56 }}>
-          <div>
-            <SectionLabel>Selected Works</SectionLabel>
-            <h2 style={{ fontFamily: 'var(--font-righteous),cursive', fontSize: 'clamp(36px,5vw,56px)', lineHeight: 1.04, color: C.beige, margin: 0 }}>Case studies</h2>
-          </div>
-          <button onClick={() => go('works')} onMouseEnter={() => h('va')} onMouseLeave={() => u('va')}
-            style={{ background: 'none', border: `1px solid ${hov.va ? 'rgba(243,239,232,0.4)' : 'rgba(243,239,232,0.18)'}`, padding: '12px 28px', color: `rgba(243,239,232,${hov.va ? 0.9 : 0.6})`, fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.22s' }}>
-            View All →
-          </button>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: mob ? 'repeat(2,1fr)' : tab ? 'repeat(2,1fr)' : 'repeat(4,1fr)', gap: 12 }}>
-          {projects.map(p => (
-            <div key={p.id} style={{ textAlign: 'left', cursor: 'pointer' }} onClick={() => router.push(`/works/${p.id}`)}>
-              <div style={{ aspectRatio: '3/4', background: p.bg, marginBottom: 14, position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(160deg,${p.hi}22 0%,${p.bg} 100%)`, zIndex: 1 }} />
-                <Image src={p.slides[0].src} alt={p.client} fill sizes="(max-width:768px) 50vw, 25vw" style={{ objectFit: 'cover' }} unoptimized />
-              </div>
-              <div style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 13, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.accent, marginTop: 4 }}>{p.client}</div>
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }

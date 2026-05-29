@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Righteous, DM_Sans } from 'next/font/google';
 import './globals.css';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
+import { SiteLayout } from '@/components/SiteLayout';
 
 const righteous = Righteous({
   subsets: ['latin'],
@@ -32,11 +31,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${righteous.variable} ${dmSans.variable}`}>
       <body>
-        <Navbar />
-        <div className="page-enter">
+        <SiteLayout>
           {children}
-        </div>
-        <Footer />
+        </SiteLayout>
       </body>
     </html>
   );

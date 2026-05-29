@@ -130,8 +130,11 @@ export function HomePageClient({ heroSlides, sections }: HomePageClientProps) {
           <div>
             <SectionLabel>Motion</SectionLabel>
             <h2 style={{ fontFamily: 'var(--font-righteous),cursive', fontSize: 'clamp(30px,3.5vw,48px)', lineHeight: 1.1, color: C.dark, margin: '0 0 24px' }}>Controlled movement,<br />crafted for social.</h2>
+            <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 15, lineHeight: 1.88, color: C.body, margin: '0 0 24px' }}>
+              Our motion outputs focus on cinemagraph-style clips with carefully directed movement around the product. This approach preserves packaging accuracy and visual consistency while introducing subtle motion that enhances depth, atmosphere, and engagement.
+            </p>
             <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 15, lineHeight: 1.88, color: C.body, margin: 0 }}>
-              Our video outputs are focused on cinemagraph-style clips with subtle, intentional movements. This allows us to bring the image to life while keeping control over the featured product, packaging accuracy, lighting, and composition. Each motion asset is produced in HD resolution — ideal for social media posts, reels, and digital campaign placements.
+              By keeping the product controlled and animating supporting elements within the scene, we create commercially reliable motion assets optimized for social media and digital campaigns.
             </p>
           </div>
         </div>

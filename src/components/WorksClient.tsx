@@ -7,13 +7,15 @@ import { SectionLabel } from './SectionLabel';
 import { ProjectCard } from './ProjectCard';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 import type { Project, GalleryItem } from '@/lib/data';
+import type { SanityWorksPage } from '@/lib/sanity-fetch';
 
 interface WorksClientProps {
   projects: Project[];
   gallery: GalleryItem[];
+  worksPage: SanityWorksPage;
 }
 
-export function WorksClient({ projects, gallery }: WorksClientProps) {
+export function WorksClient({ projects, gallery, worksPage }: WorksClientProps) {
   const bp  = useBreakpoint();
   const mob = bp === 'mob';
   const [activeTab, setActiveTab] = useState<'featured' | 'gallery'>('featured');
@@ -22,7 +24,7 @@ export function WorksClient({ projects, gallery }: WorksClientProps) {
   return (
     <div style={{ padding: mob ? '80px 20px 60px' : '100px 48px 100px', background: C.beige, minHeight: '100vh' }}>
       <SectionLabel>Portfolio</SectionLabel>
-      <h1 style={{ fontFamily: 'var(--font-righteous),cursive', fontSize: 'clamp(52px,8vw,88px)', lineHeight: 1.0, color: C.dark, margin: '0 0 48px' }}>Our Works</h1>
+      <h1 style={{ fontFamily: 'var(--font-righteous),cursive', fontSize: 'clamp(52px,8vw,88px)', lineHeight: 1.0, color: C.dark, margin: '0 0 48px' }}>{worksPage.heading}</h1>
 
       {/* Tabs */}
       <div style={{ display: 'flex', borderBottom: '1px solid rgba(20,20,20,0.1)', marginBottom: 56 }}>
@@ -47,7 +49,7 @@ export function WorksClient({ projects, gallery }: WorksClientProps) {
       {activeTab === 'gallery' && (
         <div>
           <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 14, lineHeight: 1.75, color: C.muted, margin: '0 0 48px', maxWidth: 480 }}>
-            A selection of individual frames — product stills, key visuals, and standalone campaign images.
+            {worksPage.galleryDescription}
           </p>
           <div style={{ columns: mob ? 2 : 3, columnGap: 16 }}>
             {gallery.map(item => (

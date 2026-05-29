@@ -1,0 +1,219 @@
+[
+  {
+    "fields": [
+      {
+        "name": "label",
+        "type": "string"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "name": "image",
+        "type": "image"
+      },
+      {
+        "name": "order",
+        "type": "number"
+      }
+    ],
+    "name": "heroSlide",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "name": "client",
+        "type": "string",
+        "title": "Client Name"
+      },
+      {
+        "options": {
+          "source": "client"
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "name": "category",
+        "type": "string"
+      },
+      {
+        "name": "description",
+        "type": "text"
+      },
+      {
+        "name": "bgColor",
+        "type": "string",
+        "title": "Background Color (hex)"
+      },
+      {
+        "name": "highlightColor",
+        "type": "string",
+        "title": "Highlight Color (hex)"
+      },
+      {
+        "initialValue": true,
+        "name": "featured",
+        "type": "boolean"
+      },
+      {
+        "name": "order",
+        "type": "number",
+        "title": "Display Order"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "name": "label",
+                "type": "string"
+              },
+              {
+                "options": {
+                  "list": [
+                    "3/4",
+                    "4/3",
+                    "16/9",
+                    "1/1"
+                  ]
+                },
+                "name": "aspectRatio",
+                "type": "string"
+              },
+              {
+                "options": {
+                  "list": [
+                    "image",
+                    "video"
+                  ]
+                },
+                "initialValue": "image",
+                "name": "mediaType",
+                "type": "string"
+              },
+              {
+                "options": {
+                  "hotspot": true
+                },
+                "name": "image",
+                "type": "image"
+              },
+              {
+                "options": {
+                  "accept": "video/*"
+                },
+                "name": "video",
+                "type": "file"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "slides",
+        "type": "array"
+      }
+    ],
+    "name": "project",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "fields": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "name": "portrait",
+            "type": "image",
+            "title": "Portrait Image (3:4)"
+          },
+          {
+            "options": {
+              "hotspot": true
+            },
+            "name": "landscape01",
+            "type": "image",
+            "title": "Landscape Image 1 (4:3)"
+          },
+          {
+            "options": {
+              "hotspot": true
+            },
+            "name": "landscape02",
+            "type": "image",
+            "title": "Landscape Image 2 (4:3)"
+          }
+        ],
+        "name": "methodImages",
+        "type": "object",
+        "title": "Method Section Images"
+      },
+      {
+        "fields": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "name": "image01",
+            "type": "image",
+            "title": "Image 1 (3:4)"
+          },
+          {
+            "options": {
+              "hotspot": true
+            },
+            "name": "image02",
+            "type": "image",
+            "title": "Image 2 (3:4)"
+          }
+        ],
+        "name": "digitalSetsImages",
+        "type": "object",
+        "title": "Digital Sets Section Images"
+      },
+      {
+        "options": {
+          "accept": "video/*"
+        },
+        "name": "motionVideo",
+        "type": "file",
+        "title": "Motion Section Video"
+      }
+    ],
+    "name": "homepageSections",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "name": "email",
+        "type": "string",
+        "title": "Contact Email"
+      },
+      {
+        "name": "instagram",
+        "type": "string",
+        "title": "Instagram Handle"
+      },
+      {
+        "name": "footerTagline",
+        "type": "string"
+      }
+    ],
+    "name": "siteSettings",
+    "type": "document"
+  }
+]

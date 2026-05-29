@@ -1,13 +1,13 @@
-import { fetchHeroSlides, fetchHomepageSections } from '@/lib/sanity-fetch';
+import { fetchHeroSlides, fetchHomepageContent } from '@/lib/sanity-fetch';
 import { HomePageClient } from '@/components/HomePageClient';
 
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [heroSlides, sections] = await Promise.all([
+  const [heroSlides, content] = await Promise.all([
     fetchHeroSlides(),
-    fetchHomepageSections(),
+    fetchHomepageContent(),
   ]);
 
-  return <HomePageClient heroSlides={heroSlides} sections={sections} />;
+  return <HomePageClient heroSlides={heroSlides} content={content} />;
 }

@@ -15,6 +15,10 @@
 
 # production
 /build
+/dist
+
+# sanity studio build
+/.sanity
 
 # misc
 .DS_Store

@@ -17,7 +17,7 @@ export function ProjectCard({ project, onClick }: { project: Project; onClick: (
     >
       <div style={{ width: '100%', aspectRatio: '3/4', background: project.bg, marginBottom: 16, position: 'relative', overflow: 'hidden' }}>
         {thumb?.type === 'image' && (
-          <Image src={thumb.src} alt={project.client} fill sizes="(max-width:768px) 50vw, 33vw" style={{ objectFit: 'cover' }} />
+          <Image src={thumb.src} alt={project.client} fill sizes="(max-width:768px) 50vw, 33vw" style={{ objectFit: 'cover' }} unoptimized />
         )}
       </div>
       <div style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 13, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.accent, marginTop: 4 }}>

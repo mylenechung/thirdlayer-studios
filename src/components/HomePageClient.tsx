@@ -142,7 +142,7 @@ export function HomePageClient({ heroSlides, content }: HomePageClientProps) {
       </section>
 
       {/* DIGITAL SETS */}
-      <section style={{ padding: P, background: C.beige }}>
+      <section style={{ padding: P, paddingBottom: mob ? 96 : tab ? 80 : 120, background: C.beige }}>
         <SectionLabel>Digital Sets</SectionLabel>
         <div style={{ display: 'grid', gridTemplateColumns: mob ? '1fr' : '1fr 1fr', gap: mob ? 40 : 64, alignItems: 'start' }}>
           <div>

@@ -26,7 +26,7 @@ export const project = defineType({
               name: 'aspectRatio',
               title: 'Aspect Ratio',
               type: 'string',
-              options: { list: ['3/4', '4/3', '16/9', '1/1'] },
+              options: { list: ['3/4', '4/3', '16/9', '9/16', '1/1'] },
             }),
             defineField({
               name: 'mediaType',

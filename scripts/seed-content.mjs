@@ -27,8 +27,8 @@ const existingHomepage = await client.fetch(`*[_type == "homepageSections"][0]{ 
 
 if (existingHomepage?._id) {
   await client.patch(existingHomepage._id).set({
-    heroHeadline:       'Defining the future of',
-    heroHeadlineAccent: 'product imagery.',
+    heroHeadline:       'Defining the future',
+    heroHeadlineAccent: 'of product imagery.',
     heroSubtext:        'A proprietary hybrid workflow combining real production expertise with AI-assisted creative tools.',
 
     whoWeAreHeading: 'The future of imagery still needs human hands.',

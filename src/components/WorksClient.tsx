@@ -51,9 +51,9 @@ export function WorksClient({ projects, gallery, worksPage }: WorksClientProps) 
           <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 14, lineHeight: 1.75, color: C.muted, margin: '0 0 48px', maxWidth: 480 }}>
             {worksPage.galleryDescription}
           </p>
-          <div style={{ columns: mob ? 2 : 3, columnGap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: mob ? 'repeat(2,1fr)' : 'repeat(3,1fr)', gap: 16, alignItems: 'start' }}>
             {gallery.map(item => (
-              <div key={item.id} style={{ breakInside: 'avoid', marginBottom: 16, aspectRatio: item.ratio, background: item.bg, display: 'flex', alignItems: 'flex-end', padding: 16, cursor: 'pointer', position: 'relative', overflow: 'hidden' }}>
+              <div key={item.id} style={{ aspectRatio: item.ratio, background: item.bg, display: 'flex', alignItems: 'flex-end', padding: 16, cursor: 'pointer', position: 'relative', overflow: 'hidden' }}>
                 {item.src && <Image src={item.src} alt={item.title} fill sizes="(max-width:768px) 50vw, 33vw" style={{ objectFit: 'cover' }} unoptimized />}
                 <span style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 12, fontWeight: 500, color: 'rgba(243,239,232,0.52)', position: 'relative', zIndex: 1 }}>{item.title}</span>
               </div>

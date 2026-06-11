@@ -16,7 +16,28 @@ export function ContactClient({ page, services }: ContactClientProps) {
   const mob = bp === 'mob';
   const tab = bp === 'tab';
   const [form, setForm] = useState({ name: '', email: '', company: '', type: '', message: '' });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (res.ok) {
+        setStatus('success');
+        setForm({ name: '', email: '', company: '', type: '', message: '' });
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+  };
 
   const PH = mob ? '80px 24px 60px' : tab ? '88px 36px 60px' : '120px 48px 100px';
   const PB = mob ? '48px 24px 64px' : tab ? '56px 36px 80px' : '80px 48px 120px';
@@ -36,11 +57,11 @@ export function ContactClient({ page, services }: ContactClientProps) {
 
       {/* Form + info */}
       <section style={{ padding: PB, display: 'grid', gridTemplateColumns: mob ? '1fr' : tab ? '1fr' : '1fr 1fr', gap: mob ? 48 : tab ? 56 : 120, alignItems: 'start' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
           {([['name', 'Full Name', 'Your name'], ['email', 'Email Address', 'your@email.com'], ['company', 'Company / Brand', 'Your company']] as const).map(([k, l, p]) => (
             <div key={k}>
               <label style={lbl}>{l}</label>
-              <input type="text" placeholder={p} value={form[k]} onChange={e => set(k, e.target.value)} style={inp} />
+              <input type={k === 'email' ? 'email' : 'text'} placeholder={p} value={form[k]} onChange={e => set(k, e.target.value)} required={k !== 'company'} style={inp} />
             </div>
           ))}
           <div>
@@ -53,17 +74,27 @@ export function ContactClient({ page, services }: ContactClientProps) {
           </div>
           <div>
             <label style={lbl}>Message</label>
-            <textarea rows={5} placeholder="Tell us about your project..." value={form.message} onChange={e => set('message', e.target.value)} style={{ ...inp, resize: 'vertical' }} />
+            <textarea rows={5} placeholder="Tell us about your project..." value={form.message} onChange={e => set('message', e.target.value)} required style={{ ...inp, resize: 'vertical' }} />
           </div>
-          <button style={{ background: C.accent, border: 'none', padding: '16px 40px', alignSelf: mob ? 'stretch' : 'flex-start', color: C.beige, fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', fontWeight: 500 }}>
-            Send Enquiry
+          {status === 'success' && (
+            <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 14, color: '#2e7d32', margin: 0 }}>
+              Message sent! We&apos;ll be in touch soon.
+            </p>
+          )}
+          {status === 'error' && (
+            <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 14, color: '#c62828', margin: 0 }}>
+              Something went wrong. Please try again or email us directly.
+            </p>
+          )}
+          <button type="submit" disabled={status === 'loading'} style={{ background: status === 'loading' ? 'rgba(238,90,59,0.6)' : C.accent, border: 'none', padding: '16px 40px', alignSelf: mob ? 'stretch' : 'flex-start', color: C.beige, fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', cursor: status === 'loading' ? 'default' : 'pointer', fontWeight: 500, transition: 'background 0.2s' }}>
+            {status === 'loading' ? 'Sending…' : 'Send Enquiry'}
           </button>
-        </div>
+        </form>
 
         <div style={{ paddingTop: mob ? 0 : tab ? 0 : 8 }}>
           <div style={{ marginBottom: 48 }}>
             <SectionLabel>Email</SectionLabel>
-            <a href="mailto:hello@thirdlayer_studios.com" style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: mob ? 15 : 18, color: C.dark, textDecoration: 'none' }}>hello@thirdlayer_studios.com</a>
+            <a href="mailto:hello@thirdlayer-studios.com" style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: mob ? 15 : 18, color: C.dark, textDecoration: 'none' }}>hello@thirdlayer-studios.com</a>
           </div>
           <div style={{ marginBottom: 48 }}>
             <SectionLabel>Instagram</SectionLabel>

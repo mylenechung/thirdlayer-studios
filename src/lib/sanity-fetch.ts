@@ -177,7 +177,7 @@ function toProject(p: RawProject): Project {
     hi: p.highlightColor ?? '#333333',
     slides: (p.slides ?? []).map(s => ({
       label: s.label ?? '',
-      ratio: s.aspectRatio ?? '3/4',
+      ratio: s.aspectRatio === 'original' ? 'original' : (s.aspectRatio ?? '3/4'),
       type: s.mediaType ?? 'image',
       src: s.mediaType === 'video' ? (s.videoUrl ?? '') : (imgUrl(s.image) ?? ''),
     })),

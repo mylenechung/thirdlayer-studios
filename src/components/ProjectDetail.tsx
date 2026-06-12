@@ -62,8 +62,9 @@ export function ProjectDetail({ project }: { project: Project }) {
       >
         <div style={{ display: 'flex', transform: `translateX(calc(-${slide * 100}% + ${drag.active ? drag.delta : 0}px))`, transition: drag.active ? 'none' : 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)' }}>
           {slides.map((s, i) => {
-            // Compute numeric ratio value for maxWidth calculation
-            const [rw, rh] = s.ratio.split('/').map(Number);
+            const isOriginal = s.ratio === 'original';
+            // Compute numeric ratio value for maxWidth calculation (skip for original)
+            const [rw, rh] = isOriginal ? [1, 1] : s.ratio.split('/').map(Number);
             const rv = rw / rh;
 
             return (
@@ -76,39 +77,30 @@ export function ProjectDetail({ project }: { project: Project }) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  // No fixed height — let the image box drive it
                 }}
               >
-                {/*
-                  Desktop sizing (no-crop):
-                    width: 100% fills the padded container.
-                    maxWidth = clamp(360px,78vh,900px) × ratio — this is the
-                    "ideal" width when height is 78vh. When the browser is wide
-                    enough, maxWidth kicks in and aspect-ratio derives the
-                    height → 78vh (height-driven, as spec requires).
-                    When the browser narrows below that maxWidth, width stays
-                    at 100% of the available space and aspect-ratio derives a
-                    proportionally smaller height — no cropping.
-
-                  Mobile sizing:
-                    width: 100%, aspect-ratio drives the height (width-driven).
-                */}
                 <div
                   style={{
                     width: '100%',
-                    maxWidth: mob ? undefined : `calc(clamp(360px, 78vh, 900px) * ${rv.toFixed(4)})`,
-                    aspectRatio: s.ratio,
+                    maxWidth: isOriginal || mob ? undefined : `calc(clamp(360px, 78vh, 900px) * ${rv.toFixed(4)})`,
+                    ...(isOriginal ? {} : {
+                      aspectRatio: s.ratio,
+                      position: 'relative' as const,
+                      overflow: 'hidden',
+                    }),
                     background: `linear-gradient(140deg,${project.hi}2a 0%,${project.bg} 100%)`,
                     border: '1px solid rgba(243,239,232,0.08)',
-                    display: 'flex',
-                    alignItems: 'flex-end',
-                    padding: 20,
-                    boxSizing: 'border-box',
-                    position: 'relative',
-                    overflow: 'hidden',
+                    boxSizing: 'border-box' as const,
                   }}
                 >
-                  {s.type === 'image' ? (
+                  {isOriginal && s.type === 'image' ? (
+                    // Original: let the image display at its natural dimensions, no crop
+                    <img
+                      src={s.src}
+                      alt={s.label}
+                      style={{ width: '100%', height: 'auto', display: 'block' }}
+                    />
+                  ) : s.type === 'image' ? (
                     <Image
                       src={s.src}
                       alt={s.label}
@@ -123,7 +115,7 @@ export function ProjectDetail({ project }: { project: Project }) {
                       style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   )}
-                  <span style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 10, letterSpacing: '0.15em', color: 'rgba(243,239,232,0.35)', textTransform: 'uppercase', position: 'relative', zIndex: 1 }}>{s.label}</span>
+                  <span style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 10, letterSpacing: '0.15em', color: 'rgba(243,239,232,0.35)', textTransform: 'uppercase', position: isOriginal ? 'static' : 'relative', zIndex: 1, display: 'block', padding: isOriginal ? '8px 20px 12px' : '0' }}>{s.label}</span>
                 </div>
               </div>
             );

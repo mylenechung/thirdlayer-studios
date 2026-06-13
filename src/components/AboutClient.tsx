@@ -23,15 +23,22 @@ export function AboutClient({ page }: { page: SanityAboutPage }) {
           <div>
             <SectionLabel>Our Story</SectionLabel>
             <h2 style={{ fontFamily: 'var(--font-righteous),cursive', fontSize: 36, lineHeight: 1.1, color: C.dark, margin: '0 0 24px' }}>{page.storyHeading}</h2>
-            <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 15, lineHeight: 1.88, color: C.body, margin: '0 0 20px' }}>{page.storyBody01}</p>
-            <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 15, lineHeight: 1.88, color: C.body, margin: 0 }}>{page.storyBody02}</p>
+            {[page.storyBody01, page.storyBody02, page.storyBody03, page.storyBody04, page.storyBody05]
+              .filter(p => p && p.trim())
+              .map((p, i, arr) => (
+                <p key={i} style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 15, lineHeight: 1.88, color: C.body, margin: i < arr.length - 1 ? '0 0 20px' : 0 }}>{p}</p>
+              ))}
           </div>
           <div>
             <SectionLabel>Philosophy</SectionLabel>
             <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 22, lineHeight: 1.65, color: C.dark, fontWeight: 300, margin: '0 0 32px', fontStyle: 'italic' }}>
               &ldquo;{page.philosophyQuote}&rdquo;
             </p>
-            <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 15, lineHeight: 1.88, color: C.body, margin: 0 }}>{page.philosophyBody}</p>
+            {[page.philosophyBody01, page.philosophyBody02, page.philosophyBody03]
+              .filter(p => p && p.trim())
+              .map((p, i, arr) => (
+                <p key={i} style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 15, lineHeight: 1.88, color: C.body, margin: i < arr.length - 1 ? '0 0 20px' : 0 }}>{p}</p>
+              ))}
           </div>
         </div>
       </section>

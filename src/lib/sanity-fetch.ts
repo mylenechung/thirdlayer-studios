@@ -103,8 +103,13 @@ type RawAboutPage = {
   storyHeading: string;
   storyBody01: string;
   storyBody02: string;
+  storyBody03: string;
+  storyBody04: string;
+  storyBody05: string;
   philosophyQuote: string;
-  philosophyBody: string;
+  philosophyBody01: string;
+  philosophyBody02: string;
+  philosophyBody03: string;
 };
 
 // ── Public types ───────────────────────────────────────────────────────────
@@ -161,8 +166,13 @@ export type SanityAboutPage = {
   storyHeading: string;
   storyBody01: string;
   storyBody02: string;
+  storyBody03: string;
+  storyBody04: string;
+  storyBody05: string;
   philosophyQuote: string;
-  philosophyBody: string;
+  philosophyBody01: string;
+  philosophyBody02: string;
+  philosophyBody03: string;
 };
 
 // ── Normalisers ────────────────────────────────────────────────────────────
@@ -257,8 +267,13 @@ const FALLBACK_ABOUT_PAGE: SanityAboutPage = {
   storyHeading:     'Built by creatives who understand production.',
   storyBody01:      'Before Third Layer, our work was rooted in commercial photography, filmmaking, lighting, styling, and production design. Years spent working on physical sets taught us how much craftsmanship goes into building believable imagery — and how often production limitations shape creative outcomes.',
   storyBody02:      'Third Layer was created to bridge that gap. Using a hybrid workflow grounded in photographic principles, we use AI-assisted tools to extend environments, generate scalable variations, and support larger creative systems without losing the intentionality of human art direction.',
+  storyBody03:      '',
+  storyBody04:      '',
+  storyBody05:      '',
   philosophyQuote:  'Technology expands the process. Human direction shapes the outcome.',
-  philosophyBody:   'We believe AI works best when guided by people who understand photography, filmmaking, and visual production at a foundational level. Technology allows us to move faster and build larger creative systems, but human direction remains at the center of every decision we make.',
+  philosophyBody01: 'We believe AI works best when guided by people who understand photography, filmmaking, and visual production at a foundational level. Technology allows us to move faster and build larger creative systems, but human direction remains at the center of every decision we make.',
+  philosophyBody02: '',
+  philosophyBody03: '',
 };
 
 // ── Fetch functions ────────────────────────────────────────────────────────
@@ -399,8 +414,13 @@ export async function fetchAboutPage(): Promise<SanityAboutPage> {
         storyHeading:    raw.storyHeading    ?? FALLBACK_ABOUT_PAGE.storyHeading,
         storyBody01:     raw.storyBody01     ?? FALLBACK_ABOUT_PAGE.storyBody01,
         storyBody02:     raw.storyBody02     ?? FALLBACK_ABOUT_PAGE.storyBody02,
+        storyBody03:     raw.storyBody03     ?? '',
+        storyBody04:     raw.storyBody04     ?? '',
+        storyBody05:     raw.storyBody05     ?? '',
         philosophyQuote: raw.philosophyQuote ?? FALLBACK_ABOUT_PAGE.philosophyQuote,
-        philosophyBody:  raw.philosophyBody  ?? FALLBACK_ABOUT_PAGE.philosophyBody,
+        philosophyBody01: raw.philosophyBody01 ?? FALLBACK_ABOUT_PAGE.philosophyBody01,
+        philosophyBody02: raw.philosophyBody02 ?? '',
+        philosophyBody03: raw.philosophyBody03 ?? '',
       };
     }
   } catch (err) {

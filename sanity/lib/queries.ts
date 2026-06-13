@@ -72,7 +72,7 @@ export const worksPageQuery = groq`
 export const aboutPageQuery = groq`
   *[_type == "aboutPage"][0] {
     heroHeading,
-    storyHeading, storyBody01, storyBody02,
-    philosophyQuote, philosophyBody
+    storyHeading, storyBody01, storyBody02, storyBody03, storyBody04, storyBody05,
+    philosophyQuote, philosophyBody01, philosophyBody02, philosophyBody03
   }
 `;

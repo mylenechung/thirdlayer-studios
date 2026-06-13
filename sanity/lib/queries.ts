@@ -33,8 +33,6 @@ export const siteSettingsQuery = groq`
 export const homepageContentQuery = groq`
   *[_type == "homepageSections"][0] {
     heroHeadline, heroHeadlineAccent, heroSubtext,
-    whoWeAreHeading,
-    whoWeAreBody[] { text, italic },
     approachHeading, approachBody,
     approachSteps[] { number, label },
     methodHeading, methodTagline, methodBody,

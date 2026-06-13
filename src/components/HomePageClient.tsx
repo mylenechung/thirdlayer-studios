@@ -58,23 +58,6 @@ export function HomePageClient({ heroSlides, content }: HomePageClientProps) {
         <HeroSlideshow slides={heroSlides} />
       </section>
 
-      {/* WHO WE ARE */}
-      <section style={{ padding: P, background: C.beige }}>
-        <div style={{ display: 'grid', gridTemplateColumns: mob ? '1fr' : '340px 1fr', gap: mob ? 40 : 96, alignItems: 'start' }}>
-          <div>
-            <SectionLabel>Who We Are</SectionLabel>
-            <h2 style={{ fontFamily: 'var(--font-righteous),cursive', fontSize: 'clamp(30px,3.5vw,46px)', lineHeight: 1.1, color: C.dark, margin: 0 }}>{content.whoWeAreHeading}</h2>
-          </div>
-          <div style={{ paddingTop: 48 }}>
-            {content.whoWeAreBody.map((p, i) => (
-              <p key={i} style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 16, lineHeight: 1.88, color: C.body, margin: i < content.whoWeAreBody.length - 1 ? '0 0 24px' : 0, fontStyle: p.italic ? 'italic' : 'normal' }}>
-                {p.text}
-              </p>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* OUR APPROACH */}
       <section style={{ padding: P, background: C.beige, borderTop: '1px solid rgba(20,20,20,0.07)' }}>
         <SectionLabel>Our Approach</SectionLabel>

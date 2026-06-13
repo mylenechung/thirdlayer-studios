@@ -18,7 +18,6 @@ export const homepageSections = defineType({
   type: 'document',
   groups: [
     { name: 'hero',        title: 'Hero' },
-    { name: 'whoWeAre',   title: 'Who We Are' },
     { name: 'approach',   title: 'Our Approach' },
     { name: 'method',     title: 'The Method' },
     { name: 'motion',     title: 'Motion' },
@@ -36,14 +35,6 @@ export const homepageSections = defineType({
       description: 'Second line shown in orange',
     }),
     defineField({ name: 'heroSubtext', title: 'Hero Subtext', type: 'text', group: 'hero' }),
-
-    // ── WHO WE ARE ────────────────────────────────────────────────────────────
-    defineField({ name: 'whoWeAreHeading', title: 'Heading', type: 'string', group: 'whoWeAre' }),
-    defineField({
-      name: 'whoWeAreBody', title: 'Body Paragraphs', type: 'array', group: 'whoWeAre',
-      of: [paragraphItem],
-      description: 'Each item is one paragraph. Toggle Italic for the closing line.',
-    }),
 
     // ── OUR APPROACH ──────────────────────────────────────────────────────────
     defineField({ name: 'approachHeading', title: 'Heading',   type: 'string', group: 'approach' }),

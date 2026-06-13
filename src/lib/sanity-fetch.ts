@@ -62,8 +62,6 @@ type RawHomepageContent = {
   heroHeadline: string;
   heroHeadlineAccent: string;
   heroSubtext: string;
-  whoWeAreHeading: string;
-  whoWeAreBody: RawParagraph[];
   approachHeading: string;
   approachBody: string;
   approachSteps: { number: string; label: string }[];
@@ -122,8 +120,6 @@ export type SanityHomepageContent = {
   heroHeadline: string;
   heroHeadlineAccent: string;
   heroSubtext: string;
-  whoWeAreHeading: string;
-  whoWeAreBody: Paragraph[];
   approachHeading: string;
   approachBody: string;
   approachSteps: { number: string; label: string }[];
@@ -209,13 +205,6 @@ const FALLBACK_HOMEPAGE: SanityHomepageContent = {
   heroHeadline:       'Defining the future',
   heroHeadlineAccent: 'of product imagery.',
   heroSubtext:        'A proprietary hybrid workflow combining real production expertise with AI-assisted creative tools.',
-  whoWeAreHeading:    'The future of imagery still needs human hands.',
-  whoWeAreBody: [
-    { text: 'Third Layer was built by creatives with years of industry experience producing commercial content in the real world. That experience shapes how we use AI: with restraint, direction, and an understanding of how light, texture, materials, and environments should behave naturally on camera.', italic: false },
-    { text: 'Unlike purely generative workflows, our process begins with photography. We create controlled reference imagery through real-world production, establishing a visual foundation that guides every stage of development. By grounding our work in something tangible from the start, we\'re able to achieve greater accuracy, consistency, and creative control.', italic: false },
-    { text: 'Our hybrid workflow bridges the gap between physical production and digital expansion, unlocking more ambitious visual worlds while keeping the final work rooted in authentic art direction and photographic realism.', italic: false },
-    { text: 'AI gives us reach. Human experience gives the work meaning.', italic: true },
-  ],
   approachHeading: 'Art direction meets intelligent production',
   approachBody:    'Every image begins with strong art direction, lighting, composition, and commercially accurate product photography. Our AI-assisted workflow allows us to extend environments, explore creative variations, and scale outputs efficiently — while keeping each final image grounded in real-world craft, product accuracy, and human-led post-production.',
   approachSteps: [
@@ -320,8 +309,6 @@ export async function fetchHomepageContent(): Promise<SanityHomepageContent> {
         heroHeadline:       raw.heroHeadline       ?? FALLBACK_HOMEPAGE.heroHeadline,
         heroHeadlineAccent: raw.heroHeadlineAccent ?? FALLBACK_HOMEPAGE.heroHeadlineAccent,
         heroSubtext:        raw.heroSubtext        ?? FALLBACK_HOMEPAGE.heroSubtext,
-        whoWeAreHeading:    raw.whoWeAreHeading    ?? FALLBACK_HOMEPAGE.whoWeAreHeading,
-        whoWeAreBody:       raw.whoWeAreBody?.length ? raw.whoWeAreBody : FALLBACK_HOMEPAGE.whoWeAreBody,
         approachHeading:    raw.approachHeading    ?? FALLBACK_HOMEPAGE.approachHeading,
         approachBody:       raw.approachBody       ?? FALLBACK_HOMEPAGE.approachBody,
         approachSteps:      raw.approachSteps?.length ? raw.approachSteps : FALLBACK_HOMEPAGE.approachSteps,

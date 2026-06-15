@@ -64,7 +64,7 @@ function AiMeter({ level, label }: { level: number; label: string }) {
   );
 }
 
-export function ServicesClient({ page, services: _services }: ServicesClientProps) {
+export function ServicesClient({ page }: ServicesClientProps) {
   const bp  = useBreakpoint();
   const mob = bp === 'mob';
   const tab = bp === 'tab';

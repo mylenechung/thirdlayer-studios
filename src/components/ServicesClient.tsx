@@ -11,7 +11,60 @@ interface ServicesClientProps {
   services: Service[];
 }
 
-export function ServicesClient({ page, services }: ServicesClientProps) {
+const TIERS = [
+  {
+    n: '01',
+    name: 'Foundation',
+    desc: 'Production-grade stills and video, shot on set and art directed from start to finish. This is the core of everything Third Layer makes — and it stands alone as a final deliverable when the brief calls for it.',
+    outputs: ['Key visual reference imagery', 'Campaign stills', 'Product and packaging photography', 'Videography'],
+    ai: 'Minimal',
+    aiLevel: 1,
+  },
+  {
+    n: '02',
+    name: 'Hybrid',
+    desc: 'A real shoot, extended by AI. Hero assets are captured on set, then expanded into scenes, formats, and variations through AI-assisted workflows — guided by human hands throughout.',
+    outputs: ['Scene and environment expansion', 'Key visual compositing', 'Format adaptation across multiple aspect ratios'],
+    ai: 'Moderate to High',
+    aiLevel: 2,
+  },
+  {
+    n: '03',
+    name: 'Enhanced',
+    desc: 'For briefs that go beyond imagery. Real production assets paired with design, copy, and heavy post work to deliver a complete, campaign-ready output — not just a visual, but a finished piece of communication.',
+    outputs: ['Infographics', 'Designed campaign assets', 'Copy-led visuals'],
+    ai: 'High',
+    aiLevel: 3,
+  },
+  {
+    n: '04',
+    name: 'Motion',
+    desc: "Directed video work, from concept to final cut. We build from real reference footage and expand through AI — whether that means extending a scene, adding atmospheric effects, or building environments that didn't exist on set. The result is a video that moves the way the brief intended, not the way a tool decided.",
+    outputs: ['Video ads', 'Cinemagraphs'],
+    ai: 'High',
+    aiLevel: 3,
+  },
+];
+
+function AiMeter({ level, label }: { level: number; label: string }) {
+  return (
+    <div>
+      <div style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.muted, marginBottom: 10 }}>
+        AI Participation
+      </div>
+      <div style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 13, fontWeight: 500, color: C.dark, marginBottom: 12 }}>
+        {label}
+      </div>
+      <div style={{ display: 'flex', gap: 6 }}>
+        {[1, 2, 3].map(i => (
+          <div key={i} style={{ width: 32, height: 3, background: i <= level ? C.accent : 'rgba(20,20,20,0.12)', borderRadius: 2 }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function ServicesClient({ page, services: _services }: ServicesClientProps) {
   const bp  = useBreakpoint();
   const mob = bp === 'mob';
   const tab = bp === 'tab';
@@ -27,6 +80,7 @@ export function ServicesClient({ page, services }: ServicesClientProps) {
 
   return (
     <div style={{ background: C.beige, minHeight: '100vh' }}>
+
       {/* Hero */}
       <section style={{ padding: PH, background: C.dark }}>
         <SectionLabel>What We Do</SectionLabel>
@@ -35,41 +89,87 @@ export function ServicesClient({ page, services }: ServicesClientProps) {
         </h1>
       </section>
 
-      {/* Service rows */}
-      <section style={{ padding: mob ? '32px 24px 48px' : tab ? '32px 36px 64px' : '40px 48px 80px' }}>
-        {services.map(s => (
+      {/* Intro */}
+      <section style={{ padding: mob ? '56px 24px 0' : tab ? '72px 36px 0' : '80px 48px 0' }}>
+        <div style={{ maxWidth: 680 }}>
+          <SectionLabel>Four Service Tiers</SectionLabel>
+          <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: mob ? 15 : 16, lineHeight: 1.95, color: C.body, margin: 0 }}>
+            Four service tiers, built around how much of the work starts on set. AI participation increases progressively across each tier. Services can be combined based on your brief and what our team recommends.
+          </p>
+        </div>
+      </section>
+
+      {/* Tier rows */}
+      <section style={{ padding: mob ? '0 24px' : tab ? '0 36px' : '0 48px', marginTop: mob ? 40 : 56 }}>
+        {TIERS.map((tier, idx) => (
           <div
-            key={s.n}
+            key={tier.n}
             style={{
               display: 'grid',
-              gridTemplateColumns: mob ? '1fr' : tab ? '48px 1fr' : '64px 1fr 260px',
-              gap: mob ? 12 : tab ? 32 : 56,
+              gridTemplateColumns: mob ? '1fr' : tab ? '180px 1fr' : '200px 1fr 200px',
+              gap: mob ? 0 : tab ? 48 : 72,
               alignItems: 'start',
-              padding: mob ? '40px 0' : '52px 0',
-              borderBottom: '1px solid rgba(20,20,20,0.07)',
+              padding: mob ? '40px 0' : tab ? '56px 0' : '64px 0',
+              borderTop: '1px solid rgba(20,20,20,0.08)',
+              borderBottom: idx === TIERS.length - 1 ? '1px solid rgba(20,20,20,0.08)' : 'none',
             }}
           >
-            <div style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 12, color: C.accent, letterSpacing: '0.1em', paddingTop: mob ? 0 : 5 }}>{s.n}</div>
+            {/* Left: number + tier name */}
+            <div style={{ marginBottom: mob ? 24 : 0 }}>
+              <div style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 11, color: C.accent, letterSpacing: '0.14em', marginBottom: 14 }}>{tier.n}</div>
+              <h3 style={{ fontFamily: 'var(--font-righteous),cursive', fontSize: mob ? 30 : tab ? 34 : 40, lineHeight: 1.0, color: C.dark, margin: 0 }}>
+                {tier.name}
+              </h3>
+            </div>
+
+            {/* Center: description + outputs + AI meter (tab/mob) */}
             <div>
-              <h3 style={{ fontFamily: 'var(--font-righteous),cursive', fontSize: mob ? 22 : 28, color: C.dark, margin: '0 0 16px', lineHeight: 1.1 }}>{s.title}</h3>
-              <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 15, lineHeight: 1.88, color: C.body, margin: 0 }}>{s.desc}</p>
-              {mob && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 16 }}>
-                  {s.tags.map(t => (
-                    <span key={t} style={{ padding: '4px 12px', border: '1px solid rgba(20,20,20,0.13)', fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: C.muted }}>{t}</span>
+              <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 15, lineHeight: 1.88, color: C.body, margin: '0 0 32px' }}>
+                {tier.desc}
+              </p>
+              <div style={{ marginBottom: (mob || tab) ? 28 : 0 }}>
+                <div style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.muted, marginBottom: 12 }}>
+                  Outputs
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {tier.outputs.map(o => (
+                    <span
+                      key={o}
+                      style={{ padding: '5px 14px', border: '1px solid rgba(20,20,20,0.13)', fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 12, color: C.body, lineHeight: 1.5 }}
+                    >
+                      {o}
+                    </span>
                   ))}
+                </div>
+              </div>
+              {(mob || tab) && (
+                <div style={{ marginTop: 28 }}>
+                  <AiMeter level={tier.aiLevel} label={tier.ai} />
                 </div>
               )}
             </div>
+
+            {/* Right: AI participation (desktop only) */}
             {!mob && !tab && (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, paddingTop: 5 }}>
-                {s.tags.map(t => (
-                  <span key={t} style={{ padding: '4px 12px', border: '1px solid rgba(20,20,20,0.13)', fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: C.muted }}>{t}</span>
-                ))}
+              <div style={{ paddingTop: 2 }}>
+                <AiMeter level={tier.aiLevel} label={tier.ai} />
               </div>
             )}
           </div>
         ))}
+      </section>
+
+      {/* CTA bridge */}
+      <section style={{ padding: mob ? '64px 24px 72px' : tab ? '80px 36px 88px' : '96px 48px 112px', textAlign: 'center' }}>
+        <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: mob ? 18 : tab ? 22 : 26, lineHeight: 1.55, color: C.dark, fontWeight: 300, fontStyle: 'italic', margin: '0 auto', maxWidth: 560 }}>
+          Tell us what you&apos;re making and we&apos;ll tell you how we&apos;d make it.
+        </p>
+        <button
+          onClick={() => go('contact')}
+          style={{ marginTop: 32, background: 'transparent', border: `1px solid rgba(20,20,20,0.25)`, padding: '13px 36px', color: C.dark, fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', fontWeight: 500, width: mob ? '100%' : 'auto' }}
+        >
+          Get in Touch
+        </button>
       </section>
 
       {/* How It Works */}
@@ -90,6 +190,7 @@ export function ServicesClient({ page, services }: ServicesClientProps) {
           </button>
         </div>
       </section>
+
     </div>
   );
 }

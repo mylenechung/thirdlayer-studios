@@ -41,8 +41,8 @@ const TIERS = [
     name: 'Motion',
     desc: "Directed video work, from concept to final cut. We build from real reference footage and expand through AI — whether that means extending a scene, adding atmospheric effects, or building environments that didn't exist on set. The result is a video that moves the way the brief intended, not the way a tool decided.",
     outputs: ['Video ads', 'Cinemagraphs'],
-    ai: 'High',
-    aiLevel: 3,
+    ai: 'Very High',
+    aiLevel: 4,
   },
 ];
 
@@ -55,9 +55,9 @@ function AiMeter({ level, label }: { level: number; label: string }) {
       <div style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 13, fontWeight: 500, color: C.dark, marginBottom: 12 }}>
         {label}
       </div>
-      <div style={{ display: 'flex', gap: 6 }}>
-        {[1, 2, 3].map(i => (
-          <div key={i} style={{ width: 32, height: 3, background: i <= level ? C.accent : 'rgba(20,20,20,0.12)', borderRadius: 2 }} />
+      <div style={{ display: 'flex', gap: 8 }}>
+        {[1, 2, 3, 4].map(i => (
+          <div key={i} style={{ width: 10, height: 10, borderRadius: '50%', background: i <= level ? C.accent : 'rgba(20,20,20,0.12)' }} />
         ))}
       </div>
     </div>

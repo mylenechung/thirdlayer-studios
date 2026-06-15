@@ -81,8 +81,18 @@ type RawHomepageContent = {
   digitalSets02: SanityImage;
 };
 
+type RawServiceTier = {
+  number: string;
+  name: string;
+  description: string;
+  outputs: string[];
+  aiParticipation: string;
+};
+
 type RawServicesPage = {
   heroHeading: string;
+  introText: string;
+  tiers: RawServiceTier[];
   steps: { number: string; title: string; description: string }[];
 };
 
@@ -142,8 +152,18 @@ export type SanityHomepageContent = {
 // Keep the old name as an alias so existing component references still compile
 export type SanityHomepageSections = SanityHomepageContent;
 
+export type SanityServiceTier = {
+  number: string;
+  name: string;
+  description: string;
+  outputs: string[];
+  aiParticipation: 'minimal' | 'moderate' | 'high' | 'very-high';
+};
+
 export type SanityServicesPage = {
   heroHeading: string;
+  introText: string;
+  tiers: SanityServiceTier[];
   steps: { number: string; title: string; description: string }[];
 };
 
@@ -233,6 +253,37 @@ const FALLBACK_HOMEPAGE: SanityHomepageContent = {
 
 const FALLBACK_SERVICES_PAGE: SanityServicesPage = {
   heroHeading: 'Services built for modern brands.',
+  introText: 'Four service tiers, built around how much of the work starts on set. AI participation increases progressively across each tier. Services can be combined based on your brief and what our team recommends.',
+  tiers: [
+    {
+      number: '01',
+      name: 'Foundation',
+      description: 'Production-grade stills and video, shot on set and art directed from start to finish. This is the core of everything Third Layer makes — and it stands alone as a final deliverable when the brief calls for it.',
+      outputs: ['Key visual reference imagery', 'Campaign stills', 'Product and packaging photography', 'Videography'],
+      aiParticipation: 'minimal',
+    },
+    {
+      number: '02',
+      name: 'Hybrid',
+      description: 'A real shoot, extended by AI. Hero assets are captured on set, then expanded into scenes, formats, and variations through AI-assisted workflows — guided by human hands throughout.',
+      outputs: ['Scene and environment expansion', 'Key visual compositing', 'Format adaptation across multiple aspect ratios'],
+      aiParticipation: 'moderate',
+    },
+    {
+      number: '03',
+      name: 'Enhanced',
+      description: 'For briefs that go beyond imagery. Real production assets paired with design, copy, and heavy post work to deliver a complete, campaign-ready output — not just a visual, but a finished piece of communication.',
+      outputs: ['Infographics', 'Designed campaign assets', 'Copy-led visuals'],
+      aiParticipation: 'high',
+    },
+    {
+      number: '04',
+      name: 'Motion',
+      description: "Directed video work, from concept to final cut. We build from real reference footage and expand through AI — whether that means extending a scene, adding atmospheric effects, or building environments that didn't exist on set. The result is a video that moves the way the brief intended, not the way a tool decided.",
+      outputs: ['Video ads', 'Cinemagraphs'],
+      aiParticipation: 'very-high',
+    },
+  ],
   steps: [
     { number: '01', title: 'Brief & Direction',  description: 'Every project begins with a clear production roadmap. We align on campaign goals, featured products, output requirements, aspect ratios, and creative references to establish a strong foundation before production begins.' },
     { number: '02', title: 'Art Direction',      description: 'Strong visuals begin with strong foundations. Our approach to lighting, composition, and set design is rooted in years of real production experience, with practical shoots and reference plates used whenever needed to guide accuracy and realism.' },
@@ -353,6 +404,8 @@ export async function fetchServicesPage(): Promise<SanityServicesPage> {
     if (raw) {
       return {
         heroHeading: raw.heroHeading ?? FALLBACK_SERVICES_PAGE.heroHeading,
+        introText:   raw.introText   ?? FALLBACK_SERVICES_PAGE.introText,
+        tiers:       raw.tiers?.length ? raw.tiers as SanityServiceTier[] : FALLBACK_SERVICES_PAGE.tiers,
         steps:       raw.steps?.length ? raw.steps : FALLBACK_SERVICES_PAGE.steps,
       };
     }

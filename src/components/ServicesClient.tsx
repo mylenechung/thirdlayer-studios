@@ -11,40 +11,12 @@ interface ServicesClientProps {
   services: Service[];
 }
 
-const TIERS = [
-  {
-    n: '01',
-    name: 'Foundation',
-    desc: 'Production-grade stills and video, shot on set and art directed from start to finish. This is the core of everything Third Layer makes — and it stands alone as a final deliverable when the brief calls for it.',
-    outputs: ['Key visual reference imagery', 'Campaign stills', 'Product and packaging photography', 'Videography'],
-    ai: 'Minimal',
-    aiLevel: 1,
-  },
-  {
-    n: '02',
-    name: 'Hybrid',
-    desc: 'A real shoot, extended by AI. Hero assets are captured on set, then expanded into scenes, formats, and variations through AI-assisted workflows — guided by human hands throughout.',
-    outputs: ['Scene and environment expansion', 'Key visual compositing', 'Format adaptation across multiple aspect ratios'],
-    ai: 'Moderate to High',
-    aiLevel: 2,
-  },
-  {
-    n: '03',
-    name: 'Enhanced',
-    desc: 'For briefs that go beyond imagery. Real production assets paired with design, copy, and heavy post work to deliver a complete, campaign-ready output — not just a visual, but a finished piece of communication.',
-    outputs: ['Infographics', 'Designed campaign assets', 'Copy-led visuals'],
-    ai: 'High',
-    aiLevel: 3,
-  },
-  {
-    n: '04',
-    name: 'Motion',
-    desc: "Directed video work, from concept to final cut. We build from real reference footage and expand through AI — whether that means extending a scene, adding atmospheric effects, or building environments that didn't exist on set. The result is a video that moves the way the brief intended, not the way a tool decided.",
-    outputs: ['Video ads', 'Cinemagraphs'],
-    ai: 'Very High',
-    aiLevel: 4,
-  },
-];
+const AI_MAP: Record<string, { label: string; level: number }> = {
+  'minimal':   { label: 'Minimal',          level: 1 },
+  'moderate':  { label: 'Moderate to High', level: 2 },
+  'high':      { label: 'High',             level: 3 },
+  'very-high': { label: 'Very High',        level: 4 },
+};
 
 function AiMeter({ level, label }: { level: number; label: string }) {
   return (
@@ -94,16 +66,18 @@ export function ServicesClient({ page }: ServicesClientProps) {
         <div style={{ maxWidth: 680 }}>
           <SectionLabel>Four Service Tiers</SectionLabel>
           <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: mob ? 15 : 16, lineHeight: 1.95, color: C.body, margin: 0 }}>
-            Four service tiers, built around how much of the work starts on set. AI participation increases progressively across each tier. Services can be combined based on your brief and what our team recommends.
+            {page.introText}
           </p>
         </div>
       </section>
 
       {/* Tier rows */}
       <section style={{ padding: mob ? '0 24px' : tab ? '0 36px' : '0 48px', marginTop: mob ? 40 : 56 }}>
-        {TIERS.map((tier, idx) => (
+        {page.tiers.map((tier, idx) => {
+          const ai = AI_MAP[tier.aiParticipation] ?? { label: tier.aiParticipation, level: 1 };
+          return (
           <div
-            key={tier.n}
+            key={tier.number}
             style={{
               display: 'grid',
               gridTemplateColumns: mob ? '1fr' : tab ? '180px 1fr' : '200px 1fr 200px',
@@ -111,12 +85,12 @@ export function ServicesClient({ page }: ServicesClientProps) {
               alignItems: 'start',
               padding: mob ? '40px 0' : tab ? '56px 0' : '64px 0',
               borderTop: '1px solid rgba(20,20,20,0.08)',
-              borderBottom: idx === TIERS.length - 1 ? '1px solid rgba(20,20,20,0.08)' : 'none',
+              borderBottom: idx === page.tiers.length - 1 ? '1px solid rgba(20,20,20,0.08)' : 'none',
             }}
           >
             {/* Left: number + tier name */}
             <div style={{ marginBottom: mob ? 24 : 0 }}>
-              <div style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 11, color: C.accent, letterSpacing: '0.14em', marginBottom: 14 }}>{tier.n}</div>
+              <div style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 11, color: C.accent, letterSpacing: '0.14em', marginBottom: 14 }}>{tier.number}</div>
               <h3 style={{ fontFamily: 'var(--font-righteous),cursive', fontSize: mob ? 30 : tab ? 34 : 40, lineHeight: 1.0, color: C.dark, margin: 0 }}>
                 {tier.name}
               </h3>
@@ -125,7 +99,7 @@ export function ServicesClient({ page }: ServicesClientProps) {
             {/* Center: description + outputs + AI meter (tab/mob) */}
             <div>
               <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 15, lineHeight: 1.88, color: C.body, margin: '0 0 32px' }}>
-                {tier.desc}
+                {tier.description}
               </p>
               <div style={{ marginBottom: (mob || tab) ? 28 : 0 }}>
                 <div style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.muted, marginBottom: 12 }}>
@@ -133,10 +107,7 @@ export function ServicesClient({ page }: ServicesClientProps) {
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                   {tier.outputs.map(o => (
-                    <span
-                      key={o}
-                      style={{ padding: '5px 14px', border: '1px solid rgba(20,20,20,0.13)', fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 12, color: C.body, lineHeight: 1.5 }}
-                    >
+                    <span key={o} style={{ padding: '5px 14px', border: '1px solid rgba(20,20,20,0.13)', fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 12, color: C.body, lineHeight: 1.5 }}>
                       {o}
                     </span>
                   ))}
@@ -144,7 +115,7 @@ export function ServicesClient({ page }: ServicesClientProps) {
               </div>
               {(mob || tab) && (
                 <div style={{ marginTop: 28 }}>
-                  <AiMeter level={tier.aiLevel} label={tier.ai} />
+                  <AiMeter level={ai.level} label={ai.label} />
                 </div>
               )}
             </div>
@@ -152,11 +123,12 @@ export function ServicesClient({ page }: ServicesClientProps) {
             {/* Right: AI participation (desktop only) */}
             {!mob && !tab && (
               <div style={{ paddingTop: 2 }}>
-                <AiMeter level={tier.aiLevel} label={tier.ai} />
+                <AiMeter level={ai.level} label={ai.label} />
               </div>
             )}
           </div>
-        ))}
+          );
+        })}
       </section>
 
       {/* How It Works */}

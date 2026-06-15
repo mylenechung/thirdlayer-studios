@@ -51,6 +51,8 @@ export const homepageContentQuery = groq`
 export const servicesPageQuery = groq`
   *[_type == "servicesPage"][0] {
     heroHeading,
+    introText,
+    tiers[] { number, name, description, outputs, aiParticipation },
     steps[] { number, title, description }
   }
 `;

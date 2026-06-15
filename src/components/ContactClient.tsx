@@ -4,14 +4,11 @@ import { C } from '@/lib/colors';
 import { SectionLabel } from '@/components/SectionLabel';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 import type { SanityContactPage } from '@/lib/sanity-fetch';
-import type { Service } from '@/lib/data';
-
 interface ContactClientProps {
   page: SanityContactPage;
-  services: Service[];
 }
 
-export function ContactClient({ page, services }: ContactClientProps) {
+export function ContactClient({ page }: ContactClientProps) {
   const bp  = useBreakpoint();
   const mob = bp === 'mob';
   const tab = bp === 'tab';
@@ -68,8 +65,11 @@ export function ContactClient({ page, services }: ContactClientProps) {
             <label style={lbl}>Project Type</label>
             <select value={form.type} onChange={e => set('type', e.target.value)} style={{ ...inp, appearance: 'none', cursor: 'pointer' }}>
               <option value="">Select a service...</option>
-              {services.map(s => <option key={s.n}>{s.title}</option>)}
-              <option>Other</option>
+              <option>Foundation</option>
+              <option>Hybrid</option>
+              <option>Enhanced</option>
+              <option>Motion</option>
+              <option>Others</option>
             </select>
           </div>
           <div>

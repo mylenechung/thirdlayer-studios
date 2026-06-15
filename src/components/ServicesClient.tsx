@@ -159,19 +159,6 @@ export function ServicesClient({ page }: ServicesClientProps) {
         ))}
       </section>
 
-      {/* CTA bridge */}
-      <section style={{ padding: mob ? '64px 24px 72px' : tab ? '80px 36px 88px' : '96px 48px 112px', textAlign: 'center' }}>
-        <p style={{ fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: mob ? 18 : tab ? 22 : 26, lineHeight: 1.55, color: C.dark, fontWeight: 300, fontStyle: 'italic', margin: '0 auto', maxWidth: 560 }}>
-          Tell us what you&apos;re making and we&apos;ll tell you how we&apos;d make it.
-        </p>
-        <button
-          onClick={() => go('contact')}
-          style={{ marginTop: 32, background: 'transparent', border: `1px solid rgba(20,20,20,0.25)`, padding: '13px 36px', color: C.dark, fontFamily: 'var(--font-dm-sans),sans-serif', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', fontWeight: 500, width: mob ? '100%' : 'auto' }}
-        >
-          Get in Touch
-        </button>
-      </section>
-
       {/* How It Works */}
       <section style={{ padding: P, background: C.dark }}>
         <SectionLabel>How It Works</SectionLabel>
